@@ -16,10 +16,10 @@ public class Commerce extends AuditModel {
     private Long commerce_id;
 
     @NotNull
-    private String first_name;
+    private String firstName;
 
     @NotNull
-    private String last_name;
+    private String lastName;
 
     @NotNull
     @Column(unique = true)
@@ -29,8 +29,8 @@ public class Commerce extends AuditModel {
     private String password;
 
     @Column(unique = true)
-    private String email_address;
+    private String emailAddress;
 
     @NotNull
-    private Date birth_date;
+    private Date birthDate;
 }
