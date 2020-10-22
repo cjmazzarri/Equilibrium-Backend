@@ -13,7 +13,7 @@ import java.util.Date;
 public class Commerce extends AuditModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commerce_id;
+    private Long id;
 
     @NotNull
     private String firstName;
