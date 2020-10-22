@@ -16,21 +16,21 @@ public class Commerce extends AuditModel {
     private Long commerce_id;
 
     @NotNull
-    String first_name;
+    private String first_name;
 
     @NotNull
-    String last_name;
+    private String last_name;
 
     @NotNull
     @Column(unique = true)
-    String username;
+    private String username;
 
     @NotNull
-    String password;
+    private String password;
 
     @Column(unique = true)
-    String email_address;
+    private String email_address;
 
     @NotNull
-    Date birth_date;
+    private Date birth_date;
 }
