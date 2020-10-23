@@ -22,9 +22,6 @@ public class Notification extends AuditModel {
     @Lob
     private String content;
 
-    @NotNull
-    private Date date;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "commerce_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
