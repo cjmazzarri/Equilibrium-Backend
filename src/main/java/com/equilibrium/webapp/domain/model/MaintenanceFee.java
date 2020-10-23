@@ -22,6 +22,6 @@ public class MaintenanceFee extends AuditModel{
     @NotNull
     private Float value;
 
-    @OneToOne(mappedBy = "maintenance_fee")
+    @OneToOne(mappedBy = "maintenanceFee")
     private Client client;
 }
