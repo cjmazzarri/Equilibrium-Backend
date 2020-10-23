@@ -23,6 +23,6 @@ public class DeliveryFee extends AuditModel{
     @NotNull
     private String type;
 
-    @OneToOne(mappedBy = "delivery_fees")
+    @OneToOne(mappedBy = "delivery_fee")
     private Client client;
 }
