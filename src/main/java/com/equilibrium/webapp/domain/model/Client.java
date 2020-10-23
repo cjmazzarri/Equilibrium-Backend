@@ -33,5 +33,5 @@ public class Client extends AuditModel{
 
     @NotNull
     @JsonIgnore
-    private float creditAmount;
+    private Float creditAmount;
 }
