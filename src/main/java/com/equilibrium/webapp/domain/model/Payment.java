@@ -32,7 +32,4 @@ public class Payment extends AuditModel{
 
     @NotNull
     private Float amount;
-
-    @NotNull
-    private Date date;
 }

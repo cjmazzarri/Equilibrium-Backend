@@ -14,7 +14,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "sales")
-public class Sale {
+public class Sale extends AuditModel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,14 +23,11 @@ public class Sale {
     private String description;
 
     @NotNull
-    Float amount;
-
-    @NotNull
-    Date date;
+    private Float amount;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "client_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    Client client;
+    private Client client;
 }
