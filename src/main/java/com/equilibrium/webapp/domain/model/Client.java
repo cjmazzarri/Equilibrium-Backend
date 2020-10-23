@@ -32,6 +32,24 @@ public class Client extends AuditModel{
     private String lastName;
 
     @NotNull
+    private String currency;
+
+    @NotNull
     @JsonIgnore
     private Float creditAmount;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "rate_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Rate rate;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "delivery_fee_id", referencedColumnName = "id")
+    @JsonIgnore
+    private DeliveryFee deliveryFee;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "maintenance_fee_id", referencedColumnName = "id")
+    @JsonIgnore
+    private MaintenanceFee maintenanceFee;
 }
