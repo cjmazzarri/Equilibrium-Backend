@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @Entity
 @Table(name = "delivery_fees")
-public class DeliveryFee {
+public class DeliveryFee extends AuditModel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
