@@ -25,6 +25,9 @@ public class Rate extends AuditModel{
     @NotNull
     private String type;
 
+    @NotNull
+    private String capitalization;
+
     @OneToOne(mappedBy = "rate")
     private Client client;
 }
