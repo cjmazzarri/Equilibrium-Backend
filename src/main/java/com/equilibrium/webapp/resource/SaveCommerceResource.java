@@ -39,7 +39,6 @@ public class SaveCommerceResource {
     private String emailAddress;
 
     @NotNull
-    @NotBlank
     private Date birthDate;
 
 }
