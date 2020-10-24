@@ -43,8 +43,8 @@ public class Client extends AuditModel{
     @JsonIgnore
     private Rate rate;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "delivery_fee_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     @JsonIgnore
     private DeliveryFee deliveryFee;
 
