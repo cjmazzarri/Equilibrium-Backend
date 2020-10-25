@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "delivery_fees")
 public class DeliveryFee extends AuditModel{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "client_id")
     private Long id;
 
     @NotNull
@@ -23,6 +23,8 @@ public class DeliveryFee extends AuditModel{
     @NotNull
     private String type;
 
-    @OneToOne(mappedBy = "deliveryFee")
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "client_id")
     private Client client;
 }
