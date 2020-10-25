@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface MaintenanceFeeRepository extends JpaRepository<MaintenanceFee, Long> {
-    Optional<MaintenanceFee> findByClientId(Long clientId);
+    Optional<MaintenanceFee> findById(Long maintenanceFeeId);
 }
