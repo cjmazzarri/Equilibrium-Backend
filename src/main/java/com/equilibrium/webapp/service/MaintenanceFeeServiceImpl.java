@@ -22,12 +22,18 @@ public class MaintenanceFeeServiceImpl implements MaintenanceFeeService {
 
     @Override
     public MaintenanceFee createMaintenanceFee(Long clientId, MaintenanceFee maintenanceFee) {
-        return null;
+        maintenanceFee.setId(clientId);
+        return maintenanceFeeRepository.save(maintenanceFee);
     }
 
     @Override
     public MaintenanceFee updateMaintenanceFee(Long maintenanceFeeId, MaintenanceFee request) {
-        return null;
+        MaintenanceFee maintenanceFee = maintenanceFeeRepository.findById(maintenanceFeeId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Maintenance fee", "Id", maintenanceFeeId));
+        maintenanceFee.setPeriod(request.getPeriod());
+        maintenanceFee.setValue(request.getValue());
+        return maintenanceFeeRepository.save(maintenanceFee);
     }
 
 }
