@@ -47,7 +47,7 @@ public class CommerceController {
     }
 
     @PutMapping("/commerces/{commerceId}")
-    public CommerceResource updatePost(@PathVariable Long commerceId,
+    public CommerceResource updateCommerce(@PathVariable Long commerceId,
                                        @Valid @RequestBody SaveCommerceResource resource){
         Commerce commerce = convertToEntity(resource);
         return convertToResource(commerceService.updateCommerce(commerceId, commerce));
