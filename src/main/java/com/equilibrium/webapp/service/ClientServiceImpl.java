@@ -33,8 +33,8 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.findByCommerceId(commerceId, pageable); }
 
     @Override
-    public Client getClientByIdAndCommerceId(Long commerceId, Long clientId) {
-        return clientRepository.findByIdAndCommerceId(commerceId, clientId)
+    public Client getClientByIdAndCommerceId(Long clientId, Long commerceId) {
+        return clientRepository.findByIdAndCommerceId(clientId, commerceId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Client not found with Id " + clientId +
                                 " and CommerceId " + commerceId));
@@ -44,6 +44,7 @@ public class ClientServiceImpl implements ClientService {
     public Client createClient(Long commerceId, Client client) {
         return commerceRepository.findById(commerceId).map(commerce -> {
             client.setCommerce(commerce);
+            client.setCreditAmount((float) 0.0);
             return clientRepository.save(client);
         }).orElseThrow(() -> new ResourceNotFoundException(
                 "Commerce", "Id", commerceId));
@@ -57,14 +58,13 @@ public class ClientServiceImpl implements ClientService {
             client.setFirstName(clientDetails.getFirstName());
             client.setLastName(clientDetails.getLastName());
             client.setCurrency(clientDetails.getCurrency());
-            client.setCreditAmount(clientDetails.getCreditAmount());
             return clientRepository.save(client);
         }).orElseThrow(() -> new ResourceNotFoundException("Client", "Id", clientId));
     }
 
     @Override
     public ResponseEntity<?> deleteClient(Long commerceId, Long clientId) {
-        return clientRepository.findByIdAndCommerceId(commerceId, clientId).map(client -> {
+        return clientRepository.findByIdAndCommerceId(clientId, commerceId).map(client -> {
             clientRepository.delete(client);
             return ResponseEntity.ok().build();
         }).orElseThrow(() -> new ResourceNotFoundException(

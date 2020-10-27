@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface ClientService {
     Page<Client> getAllClientsByCommerceId(Long commerceId, Pageable pageable);
-    Client getClientByIdAndCommerceId(Long commerceId, Long clientId);
+    Client getClientByIdAndCommerceId(Long id, Long commerceId);
     Client createClient(Long commerceId, Client client);
     Client updateClient(Long commerceId, Long clientId, Client clientDetails);
     ResponseEntity<?> deleteClient(Long commerceId, Long clientId);
