@@ -33,9 +33,7 @@ public class Client extends AuditModel{
 
     @NotNull
     private String currency;
-
-    @NotNull
-    @JsonIgnore
+    
     private Float creditAmount;
 
     @OneToOne(cascade = CascadeType.ALL)

@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
     Page<Client> findByCommerceId(Long commerceId, Pageable pageable);
-    Optional<Client> findByIdAndCommerceId(Long commerceId, Long id);
+    Optional<Client> findByIdAndCommerceId(Long id, Long commerceId);
 }

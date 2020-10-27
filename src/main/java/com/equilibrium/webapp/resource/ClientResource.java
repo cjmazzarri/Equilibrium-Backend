@@ -12,4 +12,5 @@ public class ClientResource extends AuditModel {
     private String firstName;
     private String lastName;
     private String currency;
+    private Float creditAmount;
 }
