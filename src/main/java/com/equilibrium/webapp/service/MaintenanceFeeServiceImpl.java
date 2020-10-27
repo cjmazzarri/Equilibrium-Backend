@@ -18,11 +18,10 @@ public class MaintenanceFeeServiceImpl implements MaintenanceFeeService {
     private ClientRepository clientRepository;
 
     @Override
-    public MaintenanceFee getMaintenanceFeeByClientId(Long maintenanceFeeId, Long commerceId) {
-        return maintenanceFeeRepository.findByClientId(maintenanceFeeId, commerceId)
+    public MaintenanceFee getMaintenanceFeeById(Long maintenanceFeeId) {
+        return maintenanceFeeRepository.findById(maintenanceFeeId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Maintenance fee not found with Id" + maintenanceFeeId +
-                        "and Commerce Id" + commerceId));
+                        "Maintenance fee", "Id", maintenanceFeeId));
     }
 
     @Override
@@ -32,17 +31,17 @@ public class MaintenanceFeeServiceImpl implements MaintenanceFeeService {
             maintenanceFee.setId(clientId);
             maintenanceFee.setClient(client);
             return maintenanceFeeRepository.save(maintenanceFee);
-        }).orElseThrow(() -> new ResourceNotFoundException("Client", "Id", clientId));
+        }).orElseThrow(() -> new ResourceNotFoundException("Client not found with id" + clientId +
+                " and Commerce Id" + commerceId));
     }
 
     @Override
     public MaintenanceFee updateMaintenanceFee(Long maintenanceFeeId, MaintenanceFee request) {
-        if(!clientRepository.existsById(maintenanceFeeId))
-            throw new ResourceNotFoundException("Client", "Id", maintenanceFeeId);
-        return maintenanceFeeRepository.findById(maintenanceFeeId).map(maintenanceFee -> {
-            maintenanceFee.setPeriod(request.getPeriod());
-            maintenanceFee.setValue(request.getValue());
-            return maintenanceFeeRepository.save(maintenanceFee);
-        }).orElseThrow(() -> new ResourceNotFoundException("Maintenance fee", "Id", maintenanceFeeId));
+        MaintenanceFee maintenanceFee = maintenanceFeeRepository.findById(maintenanceFeeId).
+                orElseThrow( () -> new ResourceNotFoundException("Maintenance Fee", "Id",
+                        maintenanceFeeId));
+        maintenanceFee.setPeriod(request.getPeriod());
+        maintenanceFee.setValue(request.getValue());
+        return maintenanceFeeRepository.save(maintenanceFee);
     }
 }

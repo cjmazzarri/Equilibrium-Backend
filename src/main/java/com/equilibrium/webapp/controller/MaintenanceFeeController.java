@@ -23,10 +23,9 @@ public class MaintenanceFeeController {
     private ModelMapper mapper;
 
     @GetMapping("/maintenanceFees")
-    public MaintenanceFeeResource getMaintenanceFeeByIdAndCommerceId(@PathVariable(name = "clientId")
-                                 Long clientId, @PathVariable(name = "commerceId") Long commerceId) {
-        return convertToResource(maintenanceFeeService.getMaintenanceFeeByClientId(clientId,
-                commerceId));
+    public MaintenanceFeeResource getMaintenanceFeeByClientId(@PathVariable(name = "clientId")
+                                 Long clientId) {
+        return convertToResource(maintenanceFeeService.getMaintenanceFeeById(clientId));
     }
 
     @PostMapping("/maintenanceFees")
