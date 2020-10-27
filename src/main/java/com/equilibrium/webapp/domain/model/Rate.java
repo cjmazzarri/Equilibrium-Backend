@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
 public class Rate extends AuditModel{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -28,6 +27,8 @@ public class Rate extends AuditModel{
     @NotNull
     private String capitalization;
 
-    @OneToOne(mappedBy = "rate")
+    @OneToOne(cascade = CascadeType.ALL)
+    @MapsId
+    @JoinColumn(name = "id")
     private Client client;
 }

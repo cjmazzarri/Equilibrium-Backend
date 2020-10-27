@@ -36,8 +36,8 @@ public class Client extends AuditModel{
     
     private Float creditAmount;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "rate_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     @JsonIgnore
     private Rate rate;
 

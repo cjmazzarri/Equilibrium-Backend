@@ -1,6 +1,8 @@
 package com.equilibrium.webapp.service;
 
+import com.equilibrium.webapp.domain.model.Client;
 import com.equilibrium.webapp.domain.model.Rate;
+import com.equilibrium.webapp.domain.repository.ClientRepository;
 import com.equilibrium.webapp.domain.repository.RateRepository;
 import com.equilibrium.webapp.domain.service.RateService;
 import com.equilibrium.webapp.exception.ResourceNotFoundException;
@@ -13,6 +15,9 @@ public class RateServiceImpl implements RateService {
     @Autowired
     private RateRepository rateRepository;
 
+    @Autowired
+    private ClientRepository clientRepository;
+
     @Override
     public Rate getRateById(Long rateId) {
         return rateRepository.findById(rateId)
@@ -21,8 +26,13 @@ public class RateServiceImpl implements RateService {
     }
 
     @Override
-    public Rate createRate(Long clientId, Rate rate) {
+    public Rate createRate(Long commerceId, Long clientId, Rate rate) {
+        Client client=clientRepository.findByIdAndCommerceId(clientId, commerceId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Client not found with Id " + clientId +
+                                " and CommerceId " + commerceId));
         rate.setId(clientId);
+        rate.setClient(client);
         return rateRepository.save(rate);
     }
 
