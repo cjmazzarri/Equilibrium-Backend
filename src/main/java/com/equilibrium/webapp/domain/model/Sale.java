@@ -15,19 +15,21 @@ import java.util.Date;
 @Entity
 @Table(name = "sales")
 public class Sale extends AuditModel{
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotNull
-    private String description;
-
-    @NotNull
-    private Float amount;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "client_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Client client;
+
+    @NotNull
+    @Lob
+    private String description;
+
+    @NotNull
+    private Float amount;
 }
