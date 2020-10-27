@@ -9,6 +9,6 @@ import lombok.Setter;
 public class DeliveryFeeResource extends AuditModel {
     private Long id;
     private Float value;
-    private int frequency;
+    private Integer frequency;
     private String type;
 }

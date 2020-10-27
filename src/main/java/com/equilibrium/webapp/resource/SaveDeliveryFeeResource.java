@@ -14,7 +14,7 @@ public class SaveDeliveryFeeResource {
     private Float value;
 
     @NotNull
-    private int frequency;
+    private Integer frequency;
 
     @NotBlank
     @NotNull

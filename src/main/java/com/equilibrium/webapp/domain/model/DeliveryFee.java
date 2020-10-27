@@ -11,20 +11,19 @@ import javax.validation.constraints.NotNull;
 @Table(name = "delivery_fees")
 public class DeliveryFee extends AuditModel{
     @Id
-    @Column(name = "client_id")
     private Long id;
 
     @NotNull
     private Float value;
 
     @NotNull
-    private int frequency;
+    private Integer frequency;
 
     @NotNull
     private String type;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @MapsId
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "id")
     private Client client;
 }
