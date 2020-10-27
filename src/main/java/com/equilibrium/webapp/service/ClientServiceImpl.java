@@ -72,10 +72,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client setClientRate(Long commerceId, Long clientId, Long rateId) {
-        Rate rate = rateRepository.findById(rateId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Rate", "Id", rateId));
+    public Client setClientRate(Long commerceId, Long clientId, Rate rate) {
         return clientRepository.findByIdAndCommerceId(commerceId, clientId).map(client -> {
             client.setRate(rate);
             return clientRepository.save(client);
@@ -84,10 +81,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client setClientMaintenanceFee(Long commerceId, Long clientId, Long maintenanceFeeId) {
-        MaintenanceFee maintenanceFee = maintenanceFeeRepository.findById(maintenanceFeeId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Maintenance Fee", "Id", maintenanceFeeId));
+    public Client setClientMaintenanceFee(Long commerceId, Long clientId, MaintenanceFee maintenanceFee) {
         return clientRepository.findByIdAndCommerceId(commerceId, clientId).map(client -> {
             client.setMaintenanceFee(maintenanceFee);
             return clientRepository.save(client);
@@ -96,10 +90,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client setClientDeliveryFee(Long commerceId, Long clientId, Long deliveryFeeId) {
-        DeliveryFee deliveryFee = deliveryFeeRepository.findById(deliveryFeeId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Delivery Fee", "Id", deliveryFeeId));
+    public Client setClientDeliveryFee(Long commerceId, Long clientId, DeliveryFee deliveryFee) {
         return clientRepository.findByIdAndCommerceId(commerceId, clientId).map(client -> {
             client.setDeliveryFee(deliveryFee);
             return clientRepository.save(client);
