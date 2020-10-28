@@ -10,6 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class CommerceServiceImpl implements CommerceService {
 
@@ -28,8 +31,17 @@ public class CommerceServiceImpl implements CommerceService {
     }
 
     @Override
-    public Commerce createCommerce(Commerce commerce) {
-        return commerceRepository.save(commerce); }
+    public Commerce createCommerce(Commerce commerce, Pageable pageable) {
+        Page<Commerce> commercePage = commerceRepository.
+                findByEmailAddress(commerce.getEmailAddress(), pageable);
+        List<String> currentEmails = commercePage.stream().map(Commerce::getEmailAddress).
+                collect(Collectors.toList());
+        boolean emailExists = currentEmails.contains(commerce.getEmailAddress());
+        if (emailExists){
+            throw new IllegalArgumentException("Email is already assigned to an existing commerce");
+        }
+        return commerceRepository.save(commerce);
+    }
 
     @Override
     public Commerce updateCommerce(Long commerceId, Commerce commerceRequest) {
