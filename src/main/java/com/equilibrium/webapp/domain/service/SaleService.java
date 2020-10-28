@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface SaleService {
     Page<Sale> getAllSalesByClientId(Long clientId, Pageable pageable);
-    Sale getSaleByIdAndClientId(Long clientId, Long saleId);
+    Sale getSaleByIdAndClientId(Long saleId, Long clientId);
     Sale createSale(Long clientId, Sale sale);
     Sale updateSale(Long clientId, Long saleId, Sale request);
     ResponseEntity<?> deleteSale(Long clientId, Long saleId);

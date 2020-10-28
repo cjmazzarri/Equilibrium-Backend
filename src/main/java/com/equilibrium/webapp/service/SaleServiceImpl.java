@@ -27,8 +27,8 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public Sale getSaleByIdAndClientId(Long clientId, Long saleId) {
-        return saleRepository.findByIdAndClientId(clientId, saleId)
+    public Sale getSaleByIdAndClientId(Long saleId, Long clientId) {
+        return saleRepository.findByIdAndClientId(saleId, clientId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Sale not found with Id " + saleId +
                                 " and ClientId " + clientId));
@@ -56,8 +56,8 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public ResponseEntity<?> deleteSale(Long clientId, Long saleId) {
-        return saleRepository.findByIdAndClientId(clientId, saleId).map(sale -> {
+    public ResponseEntity<?> deleteSale(Long saleId, Long clientId) {
+        return saleRepository.findByIdAndClientId(saleId, clientId).map(sale -> {
             saleRepository.delete(sale);
             return ResponseEntity.ok().build();
         }).orElseThrow(() -> new ResourceNotFoundException(
