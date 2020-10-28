@@ -27,8 +27,8 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Payment getPaymentByIdAndClientId(Long clientId, Long paymentId) {
-        return paymentRepository.findByIdAndClientId(clientId, paymentId)
+    public Payment getPaymentByIdAndClientId(Long paymentId, Long clientId) {
+        return paymentRepository.findByIdAndClientId(paymentId, clientId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Payment not found with Id " + paymentId +
                                 " and ClientId " + clientId));
@@ -56,8 +56,8 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public ResponseEntity<?> deletePayment(Long clientId, Long paymentId) {
-        return paymentRepository.findByIdAndClientId(clientId, paymentId).map(payment -> {
+    public ResponseEntity<?> deletePayment(Long paymentId, Long clientId) {
+        return paymentRepository.findByIdAndClientId(paymentId, clientId).map(payment -> {
             paymentRepository.delete(payment);
             return ResponseEntity.ok().build();
         }).orElseThrow(() -> new ResourceNotFoundException(
