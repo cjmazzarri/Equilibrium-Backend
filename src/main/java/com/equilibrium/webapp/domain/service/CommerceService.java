@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 public interface CommerceService {
     Page<Commerce> getAllCommerces(Pageable pageable);
     Commerce getCommerceById(Long commerceId);
-    Commerce createCommerce(Commerce commerce);
+    Commerce createCommerce(Commerce commerce, Pageable pageable);
     Commerce updateCommerce(Long commerceId, Commerce commerceRequest);
     ResponseEntity<?> deleteCommerce(Long commerceId);
 }

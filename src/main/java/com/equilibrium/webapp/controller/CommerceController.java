@@ -41,9 +41,10 @@ public class CommerceController {
     }
 
     @PostMapping("/commerces")
-    public CommerceResource createCommerce(@Valid @RequestBody SaveCommerceResource resource){
+    public CommerceResource createCommerce(@Valid @RequestBody SaveCommerceResource resource,
+                                           Pageable pageable){
         Commerce commerce = convertToEntity(resource);
-        return convertToResource(commerceService.createCommerce(commerce));
+        return convertToResource(commerceService.createCommerce(commerce, pageable));
     }
 
     @PutMapping("/commerces/{commerceId}")
