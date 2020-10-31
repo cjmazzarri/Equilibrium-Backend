@@ -4,6 +4,7 @@ import com.equilibrium.webapp.domain.model.Notification;
 import com.equilibrium.webapp.domain.service.NotificationService;
 import com.equilibrium.webapp.resource.NotificationResource;
 import com.equilibrium.webapp.resource.SaveNotificationResource;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Tag(name = "Notifications", description = "Notifications API")
 @RestController
 @RequestMapping("/api/commerces/{commerceId}")
 public class NotificationController {
