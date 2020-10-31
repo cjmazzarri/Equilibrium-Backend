@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -15,5 +16,6 @@ public class SaveSaleResource {
     private String description;
 
     @NotNull
+    @Min(value = 0, message = "Sale amount must be positive.")
     private Float amount;
 }
