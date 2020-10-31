@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/commerces/{commerceId}/clients/{clientId}/")
+@RequestMapping("/api/commerces/{commerceId}/clients/{clientId}")
 public class SaleController {
 
     @Autowired
