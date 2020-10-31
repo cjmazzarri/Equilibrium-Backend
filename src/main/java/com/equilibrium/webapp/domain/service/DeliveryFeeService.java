@@ -1,7 +1,6 @@
 package com.equilibrium.webapp.domain.service;
 
 import com.equilibrium.webapp.domain.model.DeliveryFee;
-import org.springframework.http.ResponseEntity;
 
 public interface DeliveryFeeService {
     DeliveryFee createDeliveryFee(Long commerceId, Long clientId, DeliveryFee deliveryFee);

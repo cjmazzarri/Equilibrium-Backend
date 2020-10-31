@@ -1,6 +1,5 @@
 package com.equilibrium.webapp.controller;
 
-import com.equilibrium.webapp.domain.model.Client;
 import com.equilibrium.webapp.domain.model.Rate;
 import com.equilibrium.webapp.domain.service.ClientService;
 import com.equilibrium.webapp.domain.service.RateService;

@@ -1,11 +1,8 @@
 package com.equilibrium.webapp.controller;
 
-import com.equilibrium.webapp.domain.model.Payment;
 import com.equilibrium.webapp.domain.model.Sale;
 import com.equilibrium.webapp.domain.service.SaleService;
-import com.equilibrium.webapp.resource.PaymentResource;
 import com.equilibrium.webapp.resource.SaleResource;
-import com.equilibrium.webapp.resource.SavePaymentResource;
 import com.equilibrium.webapp.resource.SaveSaleResource;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
