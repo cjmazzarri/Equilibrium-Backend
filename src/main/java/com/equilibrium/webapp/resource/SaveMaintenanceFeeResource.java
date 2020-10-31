@@ -3,6 +3,7 @@ package com.equilibrium.webapp.resource;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -16,5 +17,6 @@ public class SaveMaintenanceFeeResource {
     private String period;
 
     @NotNull
+    @Min(value = 0, message = "Maintenance Fee value must be positive.")
     private Float value;
 }
