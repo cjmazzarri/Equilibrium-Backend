@@ -4,6 +4,7 @@ import com.equilibrium.webapp.domain.model.Client;
 import com.equilibrium.webapp.domain.service.ClientService;
 import com.equilibrium.webapp.resource.ClientResource;
 import com.equilibrium.webapp.resource.SaveClientResource;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Tag(name = "Clients", description = "Clients API")
 @RestController
 @RequestMapping("/api")
 public class ClientController {

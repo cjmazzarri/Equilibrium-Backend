@@ -5,12 +5,14 @@ import com.equilibrium.webapp.domain.service.ClientService;
 import com.equilibrium.webapp.domain.service.MaintenanceFeeService;
 import com.equilibrium.webapp.resource.MaintenanceFeeResource;
 import com.equilibrium.webapp.resource.SaveMaintenanceFeeResource;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@Tag(name = "Maintenance Fees", description = "Maintenance Fees API")
 @RestController
 @RequestMapping("/api/commerces/{commerceId}/clients/{clientId}/")
 public class MaintenanceFeeController {

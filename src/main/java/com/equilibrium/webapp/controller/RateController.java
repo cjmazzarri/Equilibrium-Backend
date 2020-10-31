@@ -1,17 +1,18 @@
 package com.equilibrium.webapp.controller;
 
-import com.equilibrium.webapp.domain.model.Client;
 import com.equilibrium.webapp.domain.model.Rate;
 import com.equilibrium.webapp.domain.service.ClientService;
 import com.equilibrium.webapp.domain.service.RateService;
 import com.equilibrium.webapp.resource.RateResource;
 import com.equilibrium.webapp.resource.SaveRateResource;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@Tag(name = "Rates", description = "Rates API")
 @RestController
 @RequestMapping("/api/commerces/{commerceId}/clients/{clientId}")
 public class RateController {

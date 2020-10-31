@@ -1,12 +1,10 @@
 package com.equilibrium.webapp.controller;
 
-import com.equilibrium.webapp.domain.model.Payment;
 import com.equilibrium.webapp.domain.model.Sale;
 import com.equilibrium.webapp.domain.service.SaleService;
-import com.equilibrium.webapp.resource.PaymentResource;
 import com.equilibrium.webapp.resource.SaleResource;
-import com.equilibrium.webapp.resource.SavePaymentResource;
 import com.equilibrium.webapp.resource.SaveSaleResource;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Tag(name = "Sales", description = "Sales API")
 @RestController
 @RequestMapping("/api/commerces/{commerceId}/clients/{clientId}")
 public class SaleController {

@@ -4,6 +4,7 @@ import com.equilibrium.webapp.domain.model.Commerce;
 import com.equilibrium.webapp.domain.service.CommerceService;
 import com.equilibrium.webapp.resource.CommerceResource;
 import com.equilibrium.webapp.resource.SaveCommerceResource;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Tag(name = "Commerces", description = "Commerces API")
 @RestController
 @RequestMapping("/api")
 public class CommerceController {
