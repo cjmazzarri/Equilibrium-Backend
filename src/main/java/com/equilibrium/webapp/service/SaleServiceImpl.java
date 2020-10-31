@@ -22,6 +22,8 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     public Page<Sale> getAllSalesByClientId(Long clientId, Pageable pageable) {
+        if(!clientRepository.existsById(clientId))
+            throw new ResourceNotFoundException("Client", "Id", clientId);
         return saleRepository.findByClientId(clientId, pageable);
     }
 

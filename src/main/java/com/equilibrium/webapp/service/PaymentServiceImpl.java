@@ -22,6 +22,8 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Page<Payment> getAllPaymentsByClientId(Long clientId, Pageable pageable) {
+        if(!clientRepository.existsById(clientId))
+            throw new ResourceNotFoundException("Client", "Id", clientId);
         return paymentRepository.findByClientId(clientId, pageable);
     }
 
