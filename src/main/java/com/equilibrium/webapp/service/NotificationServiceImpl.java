@@ -22,7 +22,10 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public Page<Notification> getAllNotificationsByCommerceId(Long commerceId, Pageable pageable) {
-        return notificationRepository.findByCommerceId(commerceId, pageable); }
+        if(!commerceRepository.existsById(commerceId))
+            throw new ResourceNotFoundException("Commerce", "Id", commerceId);
+        return notificationRepository.findByCommerceId(commerceId, pageable);
+    }
 
     @Override
     public Notification getNotificationByIdAndCommerceId(Long commerceId, Long notificationId) {
