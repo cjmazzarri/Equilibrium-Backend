@@ -26,7 +26,6 @@ public class SaveRateResource {
     private String type;
 
     @NotNull
-    @NotBlank
     @Size(max = 20)
     private String capitalization;
 }
