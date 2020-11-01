@@ -39,6 +39,8 @@ public class SaleServiceImpl implements SaleService {
     public Sale createSale(Long clientId, Sale sale) {
         return clientRepository.findById(clientId).map(client -> {
             sale.setClient(client);
+            client.setCreditAmount(client.getCreditAmount()+sale.getAmount());
+            clientRepository.save(client);
             return saleRepository.save(sale);
         }).orElseThrow(() -> new ResourceNotFoundException(
                 "Client", "Id", clientId));
