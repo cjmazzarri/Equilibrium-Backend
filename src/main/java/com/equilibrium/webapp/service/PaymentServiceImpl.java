@@ -39,6 +39,11 @@ public class PaymentServiceImpl implements PaymentService {
     public Payment createPayment(Long clientId, Payment payment) {
         return clientRepository.findById(clientId).map(client -> {
             payment.setClient(client);
+            if (payment.getAmount() > client.getCreditAmount()){
+                throw new IllegalArgumentException("Payment amount must not be greater than" +
+                        " the Client's credit amount.");
+            }
+            client.setCreditAmount(client.getCreditAmount() - payment.getAmount());
             return paymentRepository.save(payment);
         }).orElseThrow(() -> new ResourceNotFoundException(
                 "Client", "Id", clientId));
