@@ -10,6 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ClientServiceImpl implements ClientService {
 
@@ -96,6 +99,16 @@ public class ClientServiceImpl implements ClientService {
             return clientRepository.save(client);
         }).orElseThrow(() -> new ResourceNotFoundException(
                 "Client", "Id", clientId));
+    }
+
+    @Override
+    public ResponseEntity<?> nextDay() {
+        Page<Client> clientPage=clientRepository.findAll(Pageable.unpaged());
+        List<Client> clientList=clientPage.getContent().stream().peek(client -> {
+            client.nextDay();
+            clientRepository.save(client);
+        }).collect(Collectors.toList());
+        return ResponseEntity.ok().build();
     }
 
 }
