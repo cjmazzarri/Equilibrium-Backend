@@ -10,7 +10,8 @@ public class RateResource extends AuditModel {
 
     private Long id;
     private Float value;
-    private String period;
+    private Integer period;
     private String type;
-    private String capitalization;
+    private Integer capitalization;
+    private Double realRate;
 }

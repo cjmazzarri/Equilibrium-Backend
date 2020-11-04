@@ -16,9 +16,7 @@ public class SaveRateResource {
     private Float value;
 
     @NotNull
-    @NotBlank
-    @Size(max = 20)
-    private String period;
+    private Integer period;
 
     @NotBlank
     @NotNull
@@ -26,6 +24,5 @@ public class SaveRateResource {
     private String type;
 
     @NotNull
-    @Size(max = 20)
-    private String capitalization;
+    private Integer capitalization;
 }

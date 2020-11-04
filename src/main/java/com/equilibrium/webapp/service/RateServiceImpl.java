@@ -33,6 +33,7 @@ public class RateServiceImpl implements RateService {
                                 " and CommerceId " + commerceId));
         rate.setId(clientId);
         rate.setClient(client);
+        rate.setRealRate();
         return rateRepository.save(rate);
     }
 
@@ -45,6 +46,7 @@ public class RateServiceImpl implements RateService {
         rate.setPeriod(request.getPeriod());
         rate.setType(request.getType());
         rate.setCapitalization(request.getCapitalization());
+        rate.setRealRate();
         return rateRepository.save(rate);
     }
 }
