@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import java.lang.Math;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -50,4 +51,8 @@ public class Client extends AuditModel{
     @PrimaryKeyJoinColumn
     @JsonIgnore
     private MaintenanceFee maintenanceFee;
+
+    public void nextDay(){
+        this.creditAmount=(float)(Math.round((this.creditAmount*(1.0+this.rate.getRealRate()) * 100.0)) / 100.0);
+    }
 }

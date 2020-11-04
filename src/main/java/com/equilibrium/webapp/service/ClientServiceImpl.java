@@ -98,4 +98,13 @@ public class ClientServiceImpl implements ClientService {
                 "Client", "Id", clientId));
     }
 
+    @Override
+    public Client nextDay(Long commerceId, Long clientId) {
+        return clientRepository.findByIdAndCommerceId(clientId, commerceId).map(client -> {
+            client.nextDay();
+            return clientRepository.save(client);
+        }).orElseThrow(() -> new ResourceNotFoundException(
+                "Client not found with Id " + clientId + " and CommerceId " + commerceId));
+    }
+
 }
