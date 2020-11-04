@@ -39,7 +39,7 @@ public class RateController {
             @Valid @RequestBody SaveRateResource resource){
         Rate rate=rateService.createRate(commerceId, clientId, convertToEntity(resource));
         clientService.setClientRate(commerceId, clientId, rate);
-        return convertToResource(rate);
+        return convertToResource(rateService.createRate(commerceId, clientId, rate));
     }
 
     @PutMapping("/rates")
