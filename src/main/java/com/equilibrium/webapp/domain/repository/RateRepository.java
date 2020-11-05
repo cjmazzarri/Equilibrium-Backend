@@ -8,6 +8,4 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface RateRepository extends JpaRepository<Rate, Long> {
-    Optional<Rate> findById(Long rateId);
-}
+public interface RateRepository extends JpaRepository<Rate, Long> {}
