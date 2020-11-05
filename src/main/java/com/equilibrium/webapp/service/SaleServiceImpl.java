@@ -40,6 +40,7 @@ public class SaleServiceImpl implements SaleService {
         this.validateClient(clientId, commerceId);
         return clientRepository.findById(clientId).map(client -> {
             sale.setClient(client);
+            if(client.getDeliveryFee().getType().equals("Pedido")) client.setCreditAmount(client.getCreditAmount()+client.getDeliveryFee().getValue());
             client.setCreditAmount(client.getCreditAmount()+sale.getAmount());
             clientRepository.save(client);
             return saleRepository.save(sale);
