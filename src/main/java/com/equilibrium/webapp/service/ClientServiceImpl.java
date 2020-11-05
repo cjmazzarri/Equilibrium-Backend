@@ -105,6 +105,7 @@ public class ClientServiceImpl implements ClientService {
     public ResponseEntity<?> nextDay() {
         Page<Client> clientPage=clientRepository.findAll(Pageable.unpaged());
         List<Client> clientList=clientPage.getContent().stream().peek(client -> {
+            client.getRate().setRealRate();
             client.nextDay();
             clientRepository.save(client);
         }).collect(Collectors.toList());
