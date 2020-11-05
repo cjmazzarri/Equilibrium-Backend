@@ -1,5 +1,6 @@
 package com.equilibrium.webapp.service;
 
+import com.equilibrium.webapp.domain.model.Client;
 import com.equilibrium.webapp.domain.model.MaintenanceFee;
 import com.equilibrium.webapp.domain.repository.ClientRepository;
 import com.equilibrium.webapp.domain.repository.MaintenanceFeeRepository;
@@ -18,28 +19,42 @@ public class MaintenanceFeeServiceImpl implements MaintenanceFeeService {
     private ClientRepository clientRepository;
 
     @Override
-    public MaintenanceFee getMaintenanceFeeById(Long maintenanceFeeId) {
-        return maintenanceFeeRepository.findById(maintenanceFeeId)
+    public MaintenanceFee getMaintenanceFeeByCommerceIdAndId(Long commerceId, Long clientId) {
+        if(!clientRepository.existsByIdAndCommerceId(clientId, commerceId)){
+            throw new ResourceNotFoundException(
+                    "Client not found with Id " + clientId +
+                            " and CommerceId " + commerceId);
+        }
+        return maintenanceFeeRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Maintenance fee", "Id", maintenanceFeeId));
+                        "Maintenance fee not found for client with Id " + clientId +
+                                " and CommerceId " + commerceId));
     }
 
     @Override
     public MaintenanceFee createMaintenanceFee(Long commerceId, Long clientId,
                                                MaintenanceFee maintenanceFee) {
-        return clientRepository.findByIdAndCommerceId(clientId, commerceId).map(client -> {
-            maintenanceFee.setId(clientId);
-            maintenanceFee.setClient(client);
-            return maintenanceFeeRepository.save(maintenanceFee);
-        }).orElseThrow(() -> new ResourceNotFoundException("Client not found with id" + clientId +
-                " and Commerce Id" + commerceId));
+        Client client=clientRepository.findByIdAndCommerceId(clientId, commerceId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Client not found with Id " + clientId +
+                                " and CommerceId " + commerceId));
+        maintenanceFee.setId(clientId);
+        maintenanceFee.setClient(client);
+        return maintenanceFeeRepository.save(maintenanceFee);
     }
 
     @Override
-    public MaintenanceFee updateMaintenanceFee(Long maintenanceFeeId, MaintenanceFee request) {
-        MaintenanceFee maintenanceFee = maintenanceFeeRepository.findById(maintenanceFeeId).
-                orElseThrow( () -> new ResourceNotFoundException("Maintenance Fee", "Id",
-                        maintenanceFeeId));
+    public MaintenanceFee updateMaintenanceFee(Long commerceId,
+                                               Long clientId, MaintenanceFee request) {
+        if(!clientRepository.existsByIdAndCommerceId(clientId, commerceId)){
+            throw new ResourceNotFoundException(
+                    "Client not found with Id " + clientId +
+                            " and CommerceId " + commerceId);
+        }
+        MaintenanceFee maintenanceFee = maintenanceFeeRepository.findById(clientId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Maintenance fee not found for client with Id " + clientId +
+                                " and CommerceId " + commerceId));
         maintenanceFee.setPeriod(request.getPeriod());
         maintenanceFee.setValue(request.getValue());
         return maintenanceFeeRepository.save(maintenanceFee);
