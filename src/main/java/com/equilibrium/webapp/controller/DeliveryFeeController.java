@@ -27,9 +27,10 @@ public class DeliveryFeeController {
     private ModelMapper mapper;
 
     @GetMapping("/deliveryFees")
-    public DeliveryFeeResource getDeliveryFeeByClientId(
+    public DeliveryFeeResource getDeliveryFeeByCommerceIdAndClientId(
+            @PathVariable(name = "commerceId") Long commerceId,
             @PathVariable(name = "clientId") Long clientId){
-        return convertToResource(deliveryFeeService.getDeliveryFeeById(clientId));
+        return convertToResource(deliveryFeeService.getDeliveryFeeByCommerceIdAndId(commerceId, clientId));
     }
 
     @PostMapping("/deliveryFees")
@@ -44,9 +45,10 @@ public class DeliveryFeeController {
 
     @PutMapping("/deliveryFees")
     public DeliveryFeeResource updateDeliveryFee(
+            @PathVariable(name = "commerceId") Long commerceId,
             @PathVariable(name = "clientId") Long clientId,
             @Valid @RequestBody SaveDeliveryFeeResource resource){
-        return convertToResource(deliveryFeeService.updateDeliveryFee(clientId, convertToEntity(resource)));
+        return convertToResource(deliveryFeeService.updateDeliveryFee(commerceId, clientId, convertToEntity(resource)));
     }
 
     private DeliveryFee convertToEntity(SaveDeliveryFeeResource resource) {

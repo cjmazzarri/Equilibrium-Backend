@@ -20,18 +20,22 @@ public class RateServiceImpl implements RateService {
 
     @Override
     public Rate getRateByCommerceIdAndId(Long commerceId, Long clientId) {
-        Client client=clientRepository.findByIdAndCommerceId(clientId, commerceId)
+        if(!clientRepository.existsByIdAndCommerceId(clientId, commerceId)){
+            throw new ResourceNotFoundException(
+                    "Client not found with Id " + clientId +
+                            " and CommerceId " + commerceId);
+        }
+        return rateRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Rate not found for client with Id " + clientId +
                                 " and CommerceId " + commerceId));
-        return client.getRate();
     }
 
     @Override
     public Rate createRate(Long commerceId, Long clientId, Rate rate) {
         Client client=clientRepository.findByIdAndCommerceId(clientId, commerceId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Rate not found for client with Id " + clientId +
+                        "Client not found with Id " + clientId +
                                 " and CommerceId " + commerceId));
         rate.setId(clientId);
         rate.setClient(client);
@@ -41,11 +45,15 @@ public class RateServiceImpl implements RateService {
 
     @Override
     public Rate updateRate(Long commerceId, Long clientId, Rate request) {
-        Client client=clientRepository.findByIdAndCommerceId(clientId, commerceId)
+        if(!clientRepository.existsByIdAndCommerceId(clientId, commerceId)){
+            throw new ResourceNotFoundException(
+                    "Client not found with Id " + clientId +
+                            " and CommerceId " + commerceId);
+        }
+        Rate rate = rateRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Rate not found for client with Id " + clientId +
                                 " and CommerceId " + commerceId));
-        Rate rate=client.getRate();
         rate.setValue(request.getValue());
         rate.setPeriod(request.getPeriod());
         rate.setType(request.getType());

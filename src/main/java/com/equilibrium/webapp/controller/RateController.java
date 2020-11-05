@@ -27,7 +27,7 @@ public class RateController {
     private ModelMapper mapper;
 
     @GetMapping("/rates")
-    public RateResource getRateByClientId(
+    public RateResource getRateByCommerceIdAndClientId(
             @PathVariable(name = "commerceId") Long commerceId,
             @PathVariable(name = "clientId") Long clientId){
         return convertToResource(rateService.getRateByCommerceIdAndId(commerceId, clientId));
