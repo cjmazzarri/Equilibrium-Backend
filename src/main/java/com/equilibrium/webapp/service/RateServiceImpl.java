@@ -19,17 +19,19 @@ public class RateServiceImpl implements RateService {
     private ClientRepository clientRepository;
 
     @Override
-    public Rate getRateById(Long rateId) {
-        return rateRepository.findById(rateId)
+    public Rate getRateByCommerceIdAndId(Long commerceId, Long clientId) {
+        Client client=clientRepository.findByIdAndCommerceId(clientId, commerceId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Rate", "Id", rateId));
+                        "Rate not found for client with Id " + clientId +
+                                " and CommerceId " + commerceId));
+        return client.getRate();
     }
 
     @Override
     public Rate createRate(Long commerceId, Long clientId, Rate rate) {
         Client client=clientRepository.findByIdAndCommerceId(clientId, commerceId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Client not found with Id " + clientId +
+                        "Rate not found for client with Id " + clientId +
                                 " and CommerceId " + commerceId));
         rate.setId(clientId);
         rate.setClient(client);
@@ -38,10 +40,12 @@ public class RateServiceImpl implements RateService {
     }
 
     @Override
-    public Rate updateRate(Long rateId, Rate request) {
-        Rate rate = rateRepository.findById(rateId)
+    public Rate updateRate(Long commerceId, Long clientId, Rate request) {
+        Client client=clientRepository.findByIdAndCommerceId(clientId, commerceId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Rate", "Id", rateId));
+                        "Rate not found for client with Id " + clientId +
+                                " and CommerceId " + commerceId));
+        Rate rate=client.getRate();
         rate.setValue(request.getValue());
         rate.setPeriod(request.getPeriod());
         rate.setType(request.getType());
