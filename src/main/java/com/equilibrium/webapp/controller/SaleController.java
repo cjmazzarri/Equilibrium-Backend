@@ -30,41 +30,46 @@ public class SaleController {
 
     @GetMapping("/sales")
     public Page<SaleResource> getAllSalesByClientId(
+            @PathVariable(name = "commerceId") Long commerceId,
             @PathVariable(name = "clientId") Long clientId, Pageable pageable){
-        Page<Sale> salePage = saleService.getAllSalesByClientId(clientId, pageable);
+        Page<Sale> salePage = saleService.getAllSalesByCommerceIdAndClientId(commerceId, clientId, pageable);
         List<SaleResource> resources = salePage.getContent().stream()
                 .map(this::convertToResource).collect(Collectors.toList());
         return new PageImpl<>(resources, pageable, resources.size());
     }
 
     @GetMapping("/sales/{saleId}")
-    public SaleResource getSaleByIdAndClientId(
+    public SaleResource getSaleByCommerceIdAndClientIdAndId(
+            @PathVariable(name = "commerceId") Long commerceId,
             @PathVariable(name = "clientId") Long clientId,
             @PathVariable(name = "saleId") Long saleId){
-        return convertToResource(saleService.getSaleByIdAndClientId(saleId, clientId));
+        return convertToResource(saleService.getSaleByCommerceIdAndClientIdAndId(commerceId, clientId, saleId));
     }
 
     @PostMapping("/sales")
     public SaleResource createSale(
+            @PathVariable(name = "commerceId") Long commerceId,
             @PathVariable(name = "clientId") Long clientId,
             @Valid @RequestBody SaveSaleResource resource){
-        return convertToResource(saleService.createSale(clientId, convertToEntity(resource)));
+        return convertToResource(saleService.createSale(commerceId, clientId, convertToEntity(resource)));
     }
 
     @PutMapping("/sales/{saleId}")
     public SaleResource updateSale(
+            @PathVariable(name = "commerceId") Long commerceId,
             @PathVariable(name = "clientId") Long clientId,
             @PathVariable(name = "saleId") Long saleId,
             @Valid @RequestBody SaveSaleResource resource){
-        return convertToResource(saleService.updateSale(clientId, saleId,
-                convertToEntity(resource)));
+        return convertToResource(saleService.updateSale(commerceId, clientId,
+                saleId, convertToEntity(resource)));
     }
 
     @DeleteMapping("/sales/{saleId}")
     public ResponseEntity<?> deleteSale(
+            @PathVariable(name = "commerceId") Long commerceId,
             @PathVariable(name = "clientId") Long clientId,
             @PathVariable(name = "saleId") Long saleId){
-        return saleService.deleteSale(saleId, clientId);
+        return saleService.deleteSale(commerceId, clientId, saleId);
     }
 
     private Sale convertToEntity(SaveSaleResource resource){ return mapper.map(resource,

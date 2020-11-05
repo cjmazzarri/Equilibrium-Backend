@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 public interface SaleService {
-    Page<Sale> getAllSalesByClientId(Long clientId, Pageable pageable);
-    Sale getSaleByIdAndClientId(Long saleId, Long clientId);
-    Sale createSale(Long clientId, Sale sale);
-    Sale updateSale(Long clientId, Long saleId, Sale request);
-    ResponseEntity<?> deleteSale(Long clientId, Long saleId);
+    Page<Sale> getAllSalesByCommerceIdAndClientId(Long commerceId, Long clientId, Pageable pageable);
+    Sale getSaleByCommerceIdAndClientIdAndId(Long commerceId, Long clientId, Long saleId);
+    Sale createSale(Long commerceId, Long clientId, Sale sale);
+    Sale updateSale(Long commerceId, Long clientId, Long saleId, Sale request);
+    ResponseEntity<?> deleteSale(Long commerceId, Long saleId, Long clientId);
 }

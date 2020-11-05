@@ -39,7 +39,7 @@ public class PaymentController {
     }
 
     @GetMapping("/payments/{paymentId}")
-    public PaymentResource getPaymentByIdAndClientId(
+    public PaymentResource getPaymentByCommerceIdAndClientIdAndId(
             @PathVariable(name = "commerceId") Long commerceId,
             @PathVariable(name = "clientId") Long clientId,
             @PathVariable(name = "paymentId") Long paymentId){
