@@ -27,9 +27,10 @@ public class RateController {
     private ModelMapper mapper;
 
     @GetMapping("/rates")
-    public RateResource getRateByClientId(
+    public RateResource getRateByCommerceIdAndClientId(
+            @PathVariable(name = "commerceId") Long commerceId,
             @PathVariable(name = "clientId") Long clientId){
-        return convertToResource(rateService.getRateById(clientId));
+        return convertToResource(rateService.getRateByCommerceIdAndId(commerceId, clientId));
     }
 
     @PostMapping("/rates")
@@ -44,9 +45,10 @@ public class RateController {
 
     @PutMapping("/rates")
     public RateResource updateRate(
+            @PathVariable(name = "commerceId") Long commerceId,
             @PathVariable(name = "clientId") Long clientId,
             @Valid @RequestBody SaveRateResource resource){
-        return convertToResource(rateService.updateRate(clientId, convertToEntity(resource)));
+        return convertToResource(rateService.updateRate(commerceId, clientId, convertToEntity(resource)));
     }
 
     private Rate convertToEntity(SaveRateResource resource) {

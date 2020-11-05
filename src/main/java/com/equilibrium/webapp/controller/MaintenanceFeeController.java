@@ -26,9 +26,10 @@ public class MaintenanceFeeController {
     private ModelMapper mapper;
 
     @GetMapping("/maintenanceFees")
-    public MaintenanceFeeResource getMaintenanceFeeByClientId(@PathVariable(name = "clientId")
-                                 Long clientId) {
-        return convertToResource(maintenanceFeeService.getMaintenanceFeeById(clientId));
+    public MaintenanceFeeResource getMaintenanceFeeByCommerceIdAndClientId(
+            @PathVariable(name = "commerceId") Long commerceId,
+            @PathVariable(name = "clientId") Long clientId) {
+        return convertToResource(maintenanceFeeService.getMaintenanceFeeByCommerceIdAndId(commerceId, clientId));
     }
 
     @PostMapping("/maintenanceFees")
@@ -39,13 +40,15 @@ public class MaintenanceFeeController {
         MaintenanceFee maintenanceFee = maintenanceFeeService.createMaintenanceFee(commerceId, clientId,
                 convertToEntity(resource));
         clientService.setClientMaintenanceFee(commerceId, clientId, maintenanceFee);
-        return convertToResource(maintenanceFee);
+        return convertToResource(maintenanceFeeService.createMaintenanceFee(commerceId, clientId, maintenanceFee));
     }
 
     @PutMapping("/maintenanceFees")
-    public MaintenanceFeeResource updateMaintenanceFee(@PathVariable(name = "clientId") Long clientId,
-                                               @Valid  @RequestBody SaveMaintenanceFeeResource resource) {
-        return convertToResource(maintenanceFeeService.updateMaintenanceFee(clientId, convertToEntity(resource)));
+    public MaintenanceFeeResource updateMaintenanceFee(
+            @PathVariable(name = "commerceId") Long commerceId,
+            @PathVariable(name = "clientId") Long clientId,
+            @Valid  @RequestBody SaveMaintenanceFeeResource resource) {
+        return convertToResource(maintenanceFeeService.updateMaintenanceFee(commerceId, clientId, convertToEntity(resource)));
     }
 
     private MaintenanceFee convertToEntity(SaveMaintenanceFeeResource resource){ return mapper.map(resource,

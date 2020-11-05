@@ -19,10 +19,12 @@ public class RateServiceImpl implements RateService {
     private ClientRepository clientRepository;
 
     @Override
-    public Rate getRateById(Long rateId) {
-        return rateRepository.findById(rateId)
+    public Rate getRateByCommerceIdAndId(Long commerceId, Long clientId) {
+        this.validateClient(clientId, commerceId);
+        return rateRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Rate", "Id", rateId));
+                        "Rate not found for client with Id " + clientId +
+                                " and CommerceId " + commerceId));
     }
 
     @Override
@@ -38,15 +40,24 @@ public class RateServiceImpl implements RateService {
     }
 
     @Override
-    public Rate updateRate(Long rateId, Rate request) {
-        Rate rate = rateRepository.findById(rateId)
+    public Rate updateRate(Long commerceId, Long clientId, Rate request) {
+        this.validateClient(clientId, commerceId);
+        Rate rate = rateRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Rate", "Id", rateId));
+                        "Rate not found for client with Id " + clientId +
+                                " and CommerceId " + commerceId));
         rate.setValue(request.getValue());
         rate.setPeriod(request.getPeriod());
         rate.setType(request.getType());
         rate.setCapitalization(request.getCapitalization());
         rate.setRealRate();
         return rateRepository.save(rate);
+    }
+
+    public void validateClient(Long clientId, Long commerceId){
+        if(!clientRepository.existsByIdAndCommerceId(clientId, commerceId)){
+            throw new ResourceNotFoundException(
+                    "Client not found with Id " + clientId +
+                            " and CommerceId " + commerceId);}
     }
 }

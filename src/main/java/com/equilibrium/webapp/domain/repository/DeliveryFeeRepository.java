@@ -7,6 +7,4 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface DeliveryFeeRepository extends JpaRepository<DeliveryFee, Long> {
-    Optional<DeliveryFee> findById(Long deliveryFeeId);
-}
+public interface DeliveryFeeRepository extends JpaRepository<DeliveryFee, Long> {}

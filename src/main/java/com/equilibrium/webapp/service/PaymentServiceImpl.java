@@ -21,14 +21,14 @@ public class PaymentServiceImpl implements PaymentService {
     private ClientRepository clientRepository;
 
     @Override
-    public Page<Payment> getAllPaymentsByClientId(Long clientId, Pageable pageable) {
-        if(!clientRepository.existsById(clientId))
-            throw new ResourceNotFoundException("Client", "Id", clientId);
+    public Page<Payment> getAllPaymentsByCommerceIdAndClientId(Long commerceId, Long clientId, Pageable pageable) {
+        this.validateClient(clientId, commerceId);
         return paymentRepository.findByClientId(clientId, pageable);
     }
 
     @Override
-    public Payment getPaymentByIdAndClientId(Long paymentId, Long clientId) {
+    public Payment getPaymentByCommerceIdAndClientIdAndId(Long commerceId, Long clientId, Long paymentId) {
+        this.validateClient(clientId, commerceId);
         return paymentRepository.findByIdAndClientId(paymentId, clientId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Payment not found with Id " + paymentId +
@@ -36,7 +36,8 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Payment createPayment(Long clientId, Payment payment) {
+    public Payment createPayment(Long commerceId, Long clientId, Payment payment) {
+        this.validateClient(clientId, commerceId);
         return clientRepository.findById(clientId).map(client -> {
             payment.setClient(client);
             if (payment.getAmount() > client.getCreditAmount()){
@@ -46,14 +47,13 @@ public class PaymentServiceImpl implements PaymentService {
             client.setCreditAmount(client.getCreditAmount() - payment.getAmount());
             return paymentRepository.save(payment);
         }).orElseThrow(() -> new ResourceNotFoundException(
-                "Client", "Id", clientId));
+                "Client not found with Id " + clientId));
     }
 
     @Override
-    public Payment updatePayment(Long clientId, Long paymentId, Payment request) {
-        if(!clientRepository.existsById(clientId))
-            throw new ResourceNotFoundException("Client", "Id", clientId);
-        return paymentRepository.findById(paymentId).map(payment -> {
+    public Payment updatePayment(Long commerceId, Long clientId, Long paymentId, Payment request) {
+        this.validateClient(clientId, commerceId);
+        return paymentRepository.findByIdAndClientId(paymentId, clientId).map(payment -> {
             payment.setAmount(request.getAmount());
             payment.setDescription(request.getDescription());
             return paymentRepository.save(payment);
@@ -62,11 +62,19 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public ResponseEntity<?> deletePayment(Long paymentId, Long clientId) {
+    public ResponseEntity<?> deletePayment(Long commerceId, Long clientId, Long paymentId) {
+        this.validateClient(clientId, commerceId);
         return paymentRepository.findByIdAndClientId(paymentId, clientId).map(payment -> {
             paymentRepository.delete(payment);
             return ResponseEntity.ok().build();
         }).orElseThrow(() -> new ResourceNotFoundException(
                 "Payment not found with Id " + paymentId + " and ClientId " + clientId));
+    }
+
+    public void validateClient(Long clientId, Long commerceId){
+        if(!clientRepository.existsByIdAndCommerceId(clientId, commerceId)){
+            throw new ResourceNotFoundException(
+                    "Client not found with Id " + clientId +
+                            " and CommerceId " + commerceId);}
     }
 }
