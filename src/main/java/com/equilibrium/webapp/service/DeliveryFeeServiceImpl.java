@@ -13,18 +13,14 @@ import org.springframework.stereotype.Service;
 public class DeliveryFeeServiceImpl implements DeliveryFeeService {
 
     @Autowired
-    DeliveryFeeRepository deliveryFeeRepository;
+    private DeliveryFeeRepository deliveryFeeRepository;
 
     @Autowired
     private ClientRepository clientRepository;
 
     @Override
     public DeliveryFee getDeliveryFeeByCommerceIdAndId(Long commerceId, Long clientId) {
-        if(!clientRepository.existsByIdAndCommerceId(clientId, commerceId)){
-            throw new ResourceNotFoundException(
-                    "Client not found with Id " + clientId +
-                            " and CommerceId " + commerceId);
-        }
+        this.validateClient(clientId, commerceId);
         return deliveryFeeRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Delivery fee not found for client with Id " + clientId +
@@ -44,11 +40,7 @@ public class DeliveryFeeServiceImpl implements DeliveryFeeService {
 
     @Override
     public DeliveryFee updateDeliveryFee(Long commerceId, Long clientId, DeliveryFee deliveryFeeRequest) {
-        if(!clientRepository.existsByIdAndCommerceId(clientId, commerceId)){
-            throw new ResourceNotFoundException(
-                    "Client not found with Id " + clientId +
-                            " and CommerceId " + commerceId);
-        }
+        this.validateClient(clientId, commerceId);
         DeliveryFee deliveryFee = deliveryFeeRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Delivery fee not found for client with Id " + clientId +
@@ -57,5 +49,12 @@ public class DeliveryFeeServiceImpl implements DeliveryFeeService {
         deliveryFee.setType(deliveryFeeRequest.getType());
         deliveryFee.setValue(deliveryFeeRequest.getValue());
         return deliveryFeeRepository.save(deliveryFee);
+    }
+
+    public void validateClient(Long clientId, Long commerceId){
+        if(!clientRepository.existsByIdAndCommerceId(clientId, commerceId)){
+            throw new ResourceNotFoundException(
+                    "Client not found with Id " + clientId +
+                            " and CommerceId " + commerceId);}
     }
 }

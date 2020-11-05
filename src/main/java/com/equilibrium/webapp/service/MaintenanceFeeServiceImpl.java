@@ -20,11 +20,7 @@ public class MaintenanceFeeServiceImpl implements MaintenanceFeeService {
 
     @Override
     public MaintenanceFee getMaintenanceFeeByCommerceIdAndId(Long commerceId, Long clientId) {
-        if(!clientRepository.existsByIdAndCommerceId(clientId, commerceId)){
-            throw new ResourceNotFoundException(
-                    "Client not found with Id " + clientId +
-                            " and CommerceId " + commerceId);
-        }
+        this.validateClient(clientId, commerceId);
         return maintenanceFeeRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Maintenance fee not found for client with Id " + clientId +
@@ -46,11 +42,7 @@ public class MaintenanceFeeServiceImpl implements MaintenanceFeeService {
     @Override
     public MaintenanceFee updateMaintenanceFee(Long commerceId,
                                                Long clientId, MaintenanceFee request) {
-        if(!clientRepository.existsByIdAndCommerceId(clientId, commerceId)){
-            throw new ResourceNotFoundException(
-                    "Client not found with Id " + clientId +
-                            " and CommerceId " + commerceId);
-        }
+        this.validateClient(clientId, commerceId);
         MaintenanceFee maintenanceFee = maintenanceFeeRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Maintenance fee not found for client with Id " + clientId +
@@ -58,5 +50,12 @@ public class MaintenanceFeeServiceImpl implements MaintenanceFeeService {
         maintenanceFee.setPeriod(request.getPeriod());
         maintenanceFee.setValue(request.getValue());
         return maintenanceFeeRepository.save(maintenanceFee);
+    }
+
+    public void validateClient(Long clientId, Long commerceId){
+        if(!clientRepository.existsByIdAndCommerceId(clientId, commerceId)){
+            throw new ResourceNotFoundException(
+                    "Client not found with Id " + clientId +
+                            " and CommerceId " + commerceId);}
     }
 }

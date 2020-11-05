@@ -22,21 +22,13 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     public Page<Sale> getAllSalesByCommerceIdAndClientId(Long commerceId, Long clientId, Pageable pageable) {
-        if(!clientRepository.existsByIdAndCommerceId(clientId, commerceId)){
-            throw new ResourceNotFoundException(
-                    "Client not found with Id " + clientId +
-                            " and CommerceId " + commerceId);
-        }
+        this.validateClient(clientId, commerceId);
         return saleRepository.findByClientId(clientId, pageable);
     }
 
     @Override
     public Sale getSaleByCommerceIdAndClientIdAndId(Long commerceId, Long clientId, Long saleId) {
-        if(!clientRepository.existsByIdAndCommerceId(clientId, commerceId)){
-            throw new ResourceNotFoundException(
-                    "Client not found with Id " + clientId +
-                            " and CommerceId " + commerceId);
-        }
+        this.validateClient(clientId, commerceId);
         return saleRepository.findByIdAndClientId(saleId, clientId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Sale not found with Id " + saleId +
@@ -45,11 +37,7 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     public Sale createSale(Long commerceId, Long clientId, Sale sale) {
-        if(!clientRepository.existsByIdAndCommerceId(clientId, commerceId)){
-            throw new ResourceNotFoundException(
-                    "Client not found with Id " + clientId +
-                            " and CommerceId " + commerceId);
-        }
+        this.validateClient(clientId, commerceId);
         return clientRepository.findById(clientId).map(client -> {
             sale.setClient(client);
             client.setCreditAmount(client.getCreditAmount()+sale.getAmount());
@@ -61,11 +49,7 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     public Sale updateSale(Long commerceId, Long clientId, Long saleId, Sale request) {
-        if(!clientRepository.existsByIdAndCommerceId(clientId, commerceId)){
-            throw new ResourceNotFoundException(
-                    "Client not found with Id " + clientId +
-                            " and CommerceId " + commerceId);
-        }
+        this.validateClient(clientId, commerceId);
         return saleRepository.findByIdAndClientId(saleId, clientId).map(sale -> {
             sale.setAmount(request.getAmount());
             sale.setDescription(request.getDescription());
@@ -76,15 +60,18 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     public ResponseEntity<?> deleteSale(Long commerceId, Long clientId, Long saleId) {
-        if(!clientRepository.existsByIdAndCommerceId(clientId, commerceId)){
-            throw new ResourceNotFoundException(
-                    "Client not found with Id " + clientId +
-                            " and CommerceId " + commerceId);
-        }
+        this.validateClient(clientId, commerceId);
         return saleRepository.findByIdAndClientId(saleId, clientId).map(sale -> {
             saleRepository.delete(sale);
             return ResponseEntity.ok().build();
         }).orElseThrow(() -> new ResourceNotFoundException(
                 "Sale not found with Id " + saleId + " and ClientId " + clientId));
+    }
+
+    public void validateClient(Long clientId, Long commerceId){
+        if(!clientRepository.existsByIdAndCommerceId(clientId, commerceId)){
+            throw new ResourceNotFoundException(
+                    "Client not found with Id " + clientId +
+                            " and CommerceId " + commerceId);}
     }
 }
