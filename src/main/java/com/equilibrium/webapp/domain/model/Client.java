@@ -56,6 +56,9 @@ public class Client extends AuditModel{
 
     public void nextDay(){
         this.activeDays++;
+        if(this.getDeliveryFee().getType().equals("Periodo")){
+            if (this.activeDays%this.getDeliveryFee().getFrequency()==0 && this.activeDays!=0) this.creditAmount+=this.getDeliveryFee().getValue();
+        }
         switch (this.getMaintenanceFee().getPeriod()){
             case "s":
                 if (this.activeDays%7==0 && this.activeDays!=0) this.creditAmount+=this.getMaintenanceFee().getValue();
