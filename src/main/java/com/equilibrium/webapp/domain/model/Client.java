@@ -52,7 +52,21 @@ public class Client extends AuditModel{
     @JsonIgnore
     private MaintenanceFee maintenanceFee;
 
+    private Integer activeDays=0;
+
     public void nextDay(){
-        this.creditAmount=(float)(Math.round((this.creditAmount*(1.0+this.rate.getRealRate()) * 100.0)) / 100.0);
+        this.activeDays++;
+        switch (this.getMaintenanceFee().getPeriod()){
+            case "s":
+                if (this.activeDays%7==0 && this.activeDays!=0) this.creditAmount+=this.getMaintenanceFee().getValue();
+                break;
+            case "q":
+                if (this.activeDays%15==0 && this.activeDays!=0) this.creditAmount+=this.getMaintenanceFee().getValue();
+                break;
+            case "m":
+                if (this.activeDays%30==0 && this.activeDays!=0) this.creditAmount+=this.getMaintenanceFee().getValue();
+                break;
+        }
+        this.creditAmount=(float)(Math.round((this.creditAmount*(1d+this.rate.getRealRate()) * 100.0)) / 100.0);
     }
 }
