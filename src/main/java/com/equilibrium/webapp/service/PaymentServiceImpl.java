@@ -36,6 +36,14 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    public Payment getLastPaymentByCommerceIdAndClientId(Long commerceId, Long clientId) {
+        this.validateClient(clientId, commerceId);
+        return paymentRepository.findTopByOrderByIdDesc()
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Last Payment not found for client with Id " + clientId));
+    }
+
+    @Override
     public Payment createPayment(Long commerceId, Long clientId, Payment payment) {
         this.validateClient(clientId, commerceId);
         return clientRepository.findById(clientId).map(client -> {

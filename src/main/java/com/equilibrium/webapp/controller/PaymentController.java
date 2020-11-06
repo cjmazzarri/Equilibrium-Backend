@@ -46,6 +46,13 @@ public class PaymentController {
         return convertToResource(paymentService.getPaymentByCommerceIdAndClientIdAndId(commerceId, clientId, paymentId));
     }
 
+    @GetMapping("/payments/latest")
+    public PaymentResource getLastPaymentByCommerceIdAndClientId(
+            @PathVariable(name = "commerceId") Long commerceId,
+            @PathVariable(name = "clientId") Long clientId){
+        return convertToResource(paymentService.getLastPaymentByCommerceIdAndClientId(commerceId, clientId));
+    }
+
     @PostMapping("/payments")
     public PaymentResource createPayment(
             @PathVariable(name = "commerceId") Long commerceId,

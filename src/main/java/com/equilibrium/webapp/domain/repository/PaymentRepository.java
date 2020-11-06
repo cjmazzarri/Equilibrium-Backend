@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
     Page<Payment> findByClientId(Long clientId, Pageable pageable);
     Optional<Payment> findByIdAndClientId(Long id, Long clientId);
+    Optional<Payment> findTopByOrderByIdDesc();
 }
