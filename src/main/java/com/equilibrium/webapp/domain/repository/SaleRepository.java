@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface SaleRepository extends JpaRepository<Sale, Long> {
     Page<Sale> findByClientId(Long clientId, Pageable pageable);
     Optional<Sale> findByIdAndClientId(Long id, Long clientId);
+    Optional<Sale> findTopByOrderByIdDesc();
 }

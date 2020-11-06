@@ -36,6 +36,14 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
+    public Sale getLastSaleByCommerceIdAndClientId(Long commerceId, Long clientId) {
+        this.validateClient(clientId, commerceId);
+        return saleRepository.findTopByOrderByIdDesc()
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Last Sale not found for client with Id " + clientId));
+    }
+
+    @Override
     public Sale createSale(Long commerceId, Long clientId, Sale sale) {
         this.validateClient(clientId, commerceId);
         return clientRepository.findById(clientId).map(client -> {

@@ -46,6 +46,13 @@ public class SaleController {
         return convertToResource(saleService.getSaleByCommerceIdAndClientIdAndId(commerceId, clientId, saleId));
     }
 
+    @GetMapping("/sales/latest")
+    public SaleResource getLastSaleByCommerceIdAndClientId(
+            @PathVariable(name = "commerceId") Long commerceId,
+            @PathVariable(name = "clientId") Long clientId){
+        return convertToResource(saleService.getLastSaleByCommerceIdAndClientId(commerceId, clientId));
+    }
+
     @PostMapping("/sales")
     public SaleResource createSale(
             @PathVariable(name = "commerceId") Long commerceId,
