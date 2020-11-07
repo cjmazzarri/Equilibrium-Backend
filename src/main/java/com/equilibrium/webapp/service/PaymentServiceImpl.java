@@ -1,7 +1,9 @@
 package com.equilibrium.webapp.service;
 
+import com.equilibrium.webapp.domain.model.Movement;
 import com.equilibrium.webapp.domain.model.Payment;
 import com.equilibrium.webapp.domain.repository.ClientRepository;
+import com.equilibrium.webapp.domain.repository.MovementRepository;
 import com.equilibrium.webapp.domain.repository.PaymentRepository;
 import com.equilibrium.webapp.domain.service.PaymentService;
 import com.equilibrium.webapp.exception.ResourceNotFoundException;
@@ -19,6 +21,9 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private MovementRepository movementRepository;
 
     @Override
     public Page<Payment> getAllPaymentsByCommerceIdAndClientId(Long commerceId, Long clientId, Pageable pageable) {
@@ -53,6 +58,8 @@ public class PaymentServiceImpl implements PaymentService {
                         " the Client's credit amount.");
             }
             client.setCreditAmount(client.getCreditAmount() - payment.getAmount());
+            clientRepository.save(client);
+            movementRepository.save(new Movement(client, "Cancelacion de "+payment.getDescription(), -payment.getAmount()));
             return paymentRepository.save(payment);
         }).orElseThrow(() -> new ResourceNotFoundException(
                 "Client not found with Id " + clientId));

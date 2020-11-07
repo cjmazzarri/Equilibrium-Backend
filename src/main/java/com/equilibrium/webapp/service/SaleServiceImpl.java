@@ -1,7 +1,9 @@
 package com.equilibrium.webapp.service;
 
+import com.equilibrium.webapp.domain.model.Movement;
 import com.equilibrium.webapp.domain.model.Sale;
 import com.equilibrium.webapp.domain.repository.ClientRepository;
+import com.equilibrium.webapp.domain.repository.MovementRepository;
 import com.equilibrium.webapp.domain.repository.SaleRepository;
 import com.equilibrium.webapp.domain.service.SaleService;
 import com.equilibrium.webapp.exception.ResourceNotFoundException;
@@ -19,6 +21,9 @@ public class SaleServiceImpl implements SaleService {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private MovementRepository movementRepository;
 
     @Override
     public Page<Sale> getAllSalesByCommerceIdAndClientId(Long commerceId, Long clientId, Pageable pageable) {
@@ -48,9 +53,15 @@ public class SaleServiceImpl implements SaleService {
         this.validateClient(clientId, commerceId);
         return clientRepository.findById(clientId).map(client -> {
             sale.setClient(client);
-            if(client.getDeliveryFee().getType().equals("Pedido")) client.setCreditAmount(client.getCreditAmount()+client.getDeliveryFee().getValue());
             client.setCreditAmount(client.getCreditAmount()+sale.getAmount());
             clientRepository.save(client);
+            movementRepository.save(new Movement(client, sale.getDescription(), sale.getAmount()));
+            if(client.getDeliveryFee().getType().equals("Pedido")) {
+                client.setCreditAmount(client.getCreditAmount() + client.getDeliveryFee().getValue());
+                movementRepository.save(new Movement(client,
+                        "Delivery por entrega de "+sale.getDescription(),
+                        client.getDeliveryFee().getValue()));
+            }
             return saleRepository.save(sale);
         }).orElseThrow(() -> new ResourceNotFoundException(
                 "Client not found with Id " + clientId));

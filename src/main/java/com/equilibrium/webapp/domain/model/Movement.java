@@ -1,0 +1,42 @@
+package com.equilibrium.webapp.domain.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "movements")
+public class Movement extends AuditModel{
+
+    public Movement() {}
+
+    public Movement(Client client, @NotNull String description, @NotNull Float amount) {
+        this.client = client;
+        this.description = description;
+        this.amount = amount;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "client_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private Client client;
+
+    @NotNull
+    @Lob
+    private String description;
+
+    @NotNull
+    private Float amount;
+}

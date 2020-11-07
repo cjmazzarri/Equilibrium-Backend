@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Tag(name = "Payments", description = "Payments API")
 @RestController
-@RequestMapping("/api/commerces/{commerceId}/clients/{clientId}/")
+@RequestMapping("/api/commerces/{commerceId}/clients/{clientId}")
 public class PaymentController {
 
     @Autowired
