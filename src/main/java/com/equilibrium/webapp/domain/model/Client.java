@@ -54,26 +54,7 @@ public class Client extends AuditModel{
 
     private Integer activeDays=0;
 
-    public void nextDay(){
-        this.activeDays++;
-        if(this.getDeliveryFee().getType().equals("Periodo")){
-            if (feeTrigger(this.getDeliveryFee().getFrequency())) this.creditAmount+=this.getDeliveryFee().getValue();
-        }
-        switch (this.getMaintenanceFee().getPeriod()){
-            case "s":
-                if (feeTrigger(7)) this.creditAmount+=this.getMaintenanceFee().getValue();
-                break;
-            case "q":
-                if (feeTrigger(15)) this.creditAmount+=this.getMaintenanceFee().getValue();
-                break;
-            case "m":
-                if (feeTrigger(30)) this.creditAmount+=this.getMaintenanceFee().getValue();
-                break;
-        }
-        this.creditAmount=(float)(Math.round((this.creditAmount*(1d+this.rate.getRealRate()) * 100.0)) / 100.0);
-    }
-
-    private boolean feeTrigger(Integer frequency) {
+    public boolean feeTrigger(Integer frequency) {
         return this.activeDays % frequency == 0 && this.activeDays != 0;
     }
 }

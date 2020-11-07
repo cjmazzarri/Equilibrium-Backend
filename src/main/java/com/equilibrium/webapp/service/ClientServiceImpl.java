@@ -22,15 +22,6 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     private CommerceRepository commerceRepository;
 
-    @Autowired
-    private RateRepository rateRepository;
-
-    @Autowired
-    private MaintenanceFeeRepository maintenanceFeeRepository;
-
-    @Autowired
-    private DeliveryFeeRepository deliveryFeeRepository;
-
     @Override
     public Page<Client> getAllClientsByCommerceId(Long commerceId, Pageable pageable) {
         return clientRepository.findByCommerceId(commerceId, pageable); }
@@ -106,7 +97,35 @@ public class ClientServiceImpl implements ClientService {
         Page<Client> clientPage=clientRepository.findAll(Pageable.unpaged());
         List<Client> clientList=clientPage.getContent().stream().peek(client -> {
             client.getRate().setRealRate();
-            client.nextDay();
+            client.setActiveDays(client.getActiveDays()+1);
+            //Delivery Fee operation
+            Float creditAmount=client.getCreditAmount();
+            Float deliveryFee=client.getDeliveryFee().getValue();
+            if(client.getDeliveryFee().getType().equals("Periodo")){
+                if (client.feeTrigger(client.getDeliveryFee().getFrequency()))
+                    client.setCreditAmount(creditAmount+deliveryFee);
+            }
+            //Maintenance Fee operation
+            creditAmount=client.getCreditAmount();
+            Float maintenanceFee=client.getMaintenanceFee().getValue();
+            switch (client.getMaintenanceFee().getPeriod()){
+                case "s":
+                    if (client.feeTrigger(7))
+                        client.setCreditAmount(creditAmount+maintenanceFee);
+                    break;
+                case "q":
+                    if (client.feeTrigger(15))
+                        client.setCreditAmount(creditAmount+maintenanceFee);
+                    break;
+                case "m":
+                    if (client.feeTrigger(30))
+                        client.setCreditAmount(creditAmount+maintenanceFee);
+                    break;
+            }
+            //Rate operation
+            creditAmount=client.getCreditAmount();
+            client.setCreditAmount((float)(Math.round
+                    ((creditAmount*(1d+client.getRate().getRealRate()) * 100.0)) / 100.0));
             clientRepository.save(client);
         }).collect(Collectors.toList());
         return ResponseEntity.ok().build();
