@@ -15,6 +15,7 @@ import javax.validation.Valid;
 @Tag(name = "Delivery Fees", description = "Delivery Fees API")
 @RestController
 @RequestMapping("/api/commerces/{commerceId}/clients/{clientId}")
+@CrossOrigin
 public class DeliveryFeeController {
 
     @Autowired

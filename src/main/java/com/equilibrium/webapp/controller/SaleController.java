@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @Tag(name = "Sales", description = "Sales API")
 @RestController
 @RequestMapping("/api/commerces/{commerceId}/clients/{clientId}")
+@CrossOrigin
 public class SaleController {
 
     @Autowired

@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @Tag(name = "Notifications", description = "Notifications API")
 @RestController
 @RequestMapping("/api/commerces/{commerceId}")
+@CrossOrigin
 public class NotificationController {
 
     @Autowired
