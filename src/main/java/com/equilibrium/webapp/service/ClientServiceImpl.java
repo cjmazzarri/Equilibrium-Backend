@@ -138,7 +138,7 @@ public class ClientServiceImpl implements ClientService {
             if (client.getCreditAmount()!=0) {
                 client.setCreditAmount((float) (Math.round
                         ((creditAmount * (1d + client.getRate().getRealRate()) * 100.0)) / 100.0));
-                movementRepository.save(new Movement(client, "Interes generado", client.getCreditAmount() - creditAmount));
+                movementRepository.save(new Movement(client, "Interés generado", client.getCreditAmount() - creditAmount));
             }
             clientRepository.save(client);
         }).collect(Collectors.toList());
