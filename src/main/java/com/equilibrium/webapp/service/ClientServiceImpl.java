@@ -96,52 +96,54 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ResponseEntity<?> nextDay() {
-        Page<Client> clientPage=clientRepository.findAll(Pageable.unpaged());
-        List<Client> clientList=clientPage.getContent().stream().peek(client -> {
-            client.getRate().setRealRate();
-            client.setActiveDays(client.getActiveDays()+1);
-            //Delivery Fee operation
-            Float creditAmount=client.getCreditAmount();
-            Float deliveryFee=client.getDeliveryFee().getValue();
-            if(client.getDeliveryFee().getType().equals("Periodo")){
-                if (client.feeTrigger(client.getDeliveryFee().getFrequency())) {
-                    client.setCreditAmount(creditAmount + deliveryFee);
-                    movementRepository.save(new Movement(client, "Delivery por periodo", deliveryFee));
+    public ResponseEntity<?> nextDay(Long days) {
+        for (int i=0; i<days; i++) {
+            Page<Client> clientPage = clientRepository.findAll(Pageable.unpaged());
+            List<Client> clientList = clientPage.getContent().stream().peek(client -> {
+                client.getRate().setRealRate();
+                client.setActiveDays(client.getActiveDays() + 1);
+                //Delivery Fee operation
+                Float creditAmount = client.getCreditAmount();
+                Float deliveryFee = client.getDeliveryFee().getValue();
+                if (client.getDeliveryFee().getType().equals("Periodo")) {
+                    if (client.feeTrigger(client.getDeliveryFee().getFrequency())) {
+                        client.setCreditAmount(creditAmount + deliveryFee);
+                        movementRepository.save(new Movement(client, "Delivery por periodo", deliveryFee));
+                    }
                 }
-            }
-            //Maintenance Fee operation
-            creditAmount=client.getCreditAmount();
-            Float maintenanceFee=client.getMaintenanceFee().getValue();
-            switch (client.getMaintenanceFee().getPeriod()){
-                case "s":
-                    if (client.feeTrigger(7)) {
-                        client.setCreditAmount(creditAmount + maintenanceFee);
-                        movementRepository.save(new Movement(client, "Mantenimiento semanal", maintenanceFee));
-                    }
-                    break;
-                case "q":
-                    if (client.feeTrigger(15)) {
-                        client.setCreditAmount(creditAmount + maintenanceFee);
-                        movementRepository.save(new Movement(client, "Mantenimiento quincenal", maintenanceFee));
-                    }
-                    break;
-                case "m":
-                    if (client.feeTrigger(30)) {
-                        client.setCreditAmount(creditAmount + maintenanceFee);
-                        movementRepository.save(new Movement(client, "Mantenimiento mensual", maintenanceFee));
-                    }
-                    break;
-            }
-            //Rate operation
-            creditAmount=client.getCreditAmount();
-            if (client.getCreditAmount()!=0) {
-                client.setCreditAmount((float) (Math.round
-                        ((creditAmount * (1d + client.getRate().getRealRate()) * 100.0)) / 100.0));
-                movementRepository.save(new Movement(client, "Interés generado", client.getCreditAmount() - creditAmount));
-            }
-            clientRepository.save(client);
-        }).collect(Collectors.toList());
+                //Maintenance Fee operation
+                creditAmount = client.getCreditAmount();
+                Float maintenanceFee = client.getMaintenanceFee().getValue();
+                switch (client.getMaintenanceFee().getPeriod()) {
+                    case "s":
+                        if (client.feeTrigger(7)) {
+                            client.setCreditAmount(creditAmount + maintenanceFee);
+                            movementRepository.save(new Movement(client, "Mantenimiento semanal", maintenanceFee));
+                        }
+                        break;
+                    case "q":
+                        if (client.feeTrigger(15)) {
+                            client.setCreditAmount(creditAmount + maintenanceFee);
+                            movementRepository.save(new Movement(client, "Mantenimiento quincenal", maintenanceFee));
+                        }
+                        break;
+                    case "m":
+                        if (client.feeTrigger(30)) {
+                            client.setCreditAmount(creditAmount + maintenanceFee);
+                            movementRepository.save(new Movement(client, "Mantenimiento mensual", maintenanceFee));
+                        }
+                        break;
+                }
+                //Rate operation
+                creditAmount = client.getCreditAmount();
+                if (client.getCreditAmount() != 0) {
+                    client.setCreditAmount((float) (Math.round
+                            ((creditAmount * (1d + client.getRate().getRealRate()) * 100.0)) / 100.0));
+                    movementRepository.save(new Movement(client, "Interés generado", client.getCreditAmount() - creditAmount));
+                }
+                clientRepository.save(client);
+            }).collect(Collectors.toList());
+        }
         return ResponseEntity.ok().build();
     }
 

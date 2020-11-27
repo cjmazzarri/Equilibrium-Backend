@@ -68,9 +68,9 @@ public class ClientController {
         return clientService.deleteClient(commerceId, clientId);
     }
 
-    @PutMapping("/nextday")
-    public ResponseEntity<?> nextDay(){
-        return clientService.nextDay();
+    @PutMapping("/nextday/{days}")
+    public ResponseEntity<?> nextDay(@PathVariable(name = "days") Long days){
+        return clientService.nextDay(days);
     }
 
     private Client convertToEntity(SaveClientResource resource){ return mapper.map(resource, Client.class); }

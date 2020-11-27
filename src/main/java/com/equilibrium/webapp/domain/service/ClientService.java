@@ -17,5 +17,5 @@ public interface ClientService {
     Client setClientRate(Long commerceId, Long clientId, Rate rate);
     Client setClientMaintenanceFee(Long commerceId, Long clientId, MaintenanceFee maintenanceFee);
     Client setClientDeliveryFee(Long commerceId, Long clientId, DeliveryFee deliveryFee);
-    ResponseEntity<?> nextDay();
+    ResponseEntity<?> nextDay(Long days);
 }
